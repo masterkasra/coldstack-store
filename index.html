@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ColdStack Gear</title>
+<meta name="description" content="Desk and security gear for crypto traders. Pay with USDT.">
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --line:#262d36; --text:#e6edf3; --muted:#8b949e;
+    --accent:#26a17b; --accent-ink:#04110c; --warn:#d29922;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  a{color:var(--accent)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:700;letter-spacing:.3px}
+  .logo span{color:var(--accent)}
+  button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 14px}
+  button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+  .hero{padding:56px 0 32px}
+  .hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+  .hero p{color:var(--muted);max-width:620px;margin:0}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .badge{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:16px 0 48px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .card img{width:100%;aspect-ratio:1;object-fit:cover;background:#0b0e12;display:block}
+  .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .card h3{margin:0;font-size:17px}
+  .card p{margin:0;color:var(--muted);font-size:14px;flex:1}
+  .price{display:flex;align-items:baseline;gap:8px}
+  .price b{font-size:20px}
+  .price s{color:var(--muted);font-size:14px}
+  section h2{font-size:24px;margin:0 0 12px}
+  .faq details{border-bottom:1px solid var(--line);padding:12px 0}
+  .faq summary{cursor:pointer;font-weight:600}
+  .faq p{color:var(--muted);margin:8px 0 0}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px;padding:24px 0;margin-top:48px}
+  /* cart drawer */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:10}
+  .overlay.open{display:block}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:var(--panel);border-left:1px solid var(--line);padding:20px 16px;overflow:auto}
+  .line{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .qty button{padding:2px 9px}
+  label{display:block;font-size:14px;color:var(--muted);margin-top:10px}
+  input,textarea{width:100%;font:inherit;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px}
+  .addr{font-family:ui-monospace,Consolas,monospace;font-size:13px;word-break:break-all;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+  .note{font-size:13px;color:var(--warn)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Cold<span>Stack</span> Gear</div>
+    <button id="cartBtn">Cart (<span id="cartCount">0</span>)</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <h1>Gear for people who hold their own keys.</h1>
+    <p>Steel seed backups, RFID-safe wallets and clean desk setups for traders. Pay with USDT, ship worldwide.</p>
+    <div class="badges">
+      <span class="badge">Pay in USDT (TRC-20)</span>
+      <span class="badge">Free worldwide shipping</span>
+      <span class="badge">30-day money-back</span>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <section class="faq" id="faq">
+    <h2>FAQ</h2>
+    <details><summary>How long does shipping take?</summary>
+      <p>Orders ship from our partner warehouse within 1–3 business days. Delivery usually takes 7–15 business days to the US, UK, EU and UAE. You get a tracking number by email.</p></details>
+    <details><summary>How do I pay?</summary>
+      <p>Add items to your cart, send the exact USDT amount on the TRON (TRC-20) network to the address shown at checkout, then paste your transaction ID in the order form. We confirm your order by email within 24 hours.</p></details>
+    <details><summary>What if something arrives damaged or I'm not happy?</summary>
+      <p>Email us within 30 days of delivery with a photo and we'll send a replacement or refund your USDT to the wallet you paid from.</p></details>
+    <details><summary>Is the steel seed plate safe?</summary>
+      <p>It's a passive stainless-steel plate with no electronics and no connectivity. You stamp or engrave your words yourself. We never see your seed phrase and never ask for it.</p></details>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span> ColdStack Gear · Contact: <a id="contactLink"></a>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="drawer" role="dialog" aria-label="Cart">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2 style="margin:0">Your cart</h2>
+      <button id="closeCart">Close</button>
+    </div>
+    <div id="lines"></div>
+    <div class="line"><b>Total</b><b><span id="total">0.00</span> USDT</b></div>
+
+    <div id="checkout">
+      <h3>Checkout</h3>
+      <p style="margin:0 0 6px;color:var(--muted);font-size:14px">1. Send exactly <b><span id="total2">0.00</span> USDT</b> on the <b>TRON (TRC-20)</b> network to:</p>
+      <div class="addr" id="wallet"></div>
+      <div class="row"><button id="copyAddr">Copy address</button></div>
+      <p class="note">Only send USDT on TRC-20. Other networks or tokens can be lost.</p>
+
+      <p style="margin:14px 0 0;color:var(--muted);font-size:14px">2. Fill in your details and send the order:</p>
+      <label>Full name <input id="fName" autocomplete="name"></label>
+      <label>Email <input id="fEmail" type="email" autocomplete="email"></label>
+      <label>Shipping address (street, city, postcode, country) <textarea id="fAddr" rows="3" autocomplete="street-address"></textarea></label>
+      <label>Transaction ID (TxID) <input id="fTx"></label>
+      <div class="row">
+        <button class="primary" id="sendOrder">Send order by email</button>
+        <button id="copyOrder">Copy order text</button>
+      </div>
+      <p id="msg" style="font-size:14px;color:var(--muted)"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====== EDIT THESE ====== */
+const CONFIG = {
+  wallet: "PASTE_YOUR_TRC20_USDT_ADDRESS_HERE",
+  email:  "Kasra.dadfar@gmail.com"
+};
+/* price = what the customer pays (USDT). cost = your estimated supplier cost incl. shipping — not shown on the site. */
+const PRODUCTS = [
+  { id:"seed",  name:"Steel Seed Phrase Backup Plate", price:39, compare:59, cost:9,
+    desc:"Stainless-steel plate for 24 words. Fire- and water-resistant. Includes punch set.", img:"img/seed.jpg" },
+  { id:"light", name:"Monitor Light Bar", price:34, compare:49, cost:12,
+    desc:"Clip-on LED bar, no screen glare, adjustable warmth. USB powered.", img:"img/light.jpg" },
+  { id:"wallet",name:"MagSafe Card Wallet (RFID-blocking)", price:24, compare:35, cost:5,
+    desc:"Snaps onto iPhone 12+, holds 3 cards, blocks contactless skimming.", img:"img/wallet.jpg" },
+  { id:"power", name:"Card-Size Power Bank 5000mAh", price:32, compare:45, cost:10,
+    desc:"Slim as 3 credit cards, built-in USB-C cable.", img:"img/power.jpg" },
+  { id:"rfid",  name:"Aluminium RFID Card Holder", price:22, compare:32, cost:5,
+    desc:"Pop-up card holder, fits 6 cards, metal shell blocks RFID.", img:"img/rfid.jpg" },
+  { id:"stand", name:"Foldable Aluminium Laptop Stand", price:36, compare:52, cost:11,
+    desc:"6 height levels, folds flat, supports up to 17-inch laptops.", img:"img/stand.jpg" }
+];
+/* ======================== */
+
+const $ = id => document.getElementById(id);
+const cart = {};
+const placeholder = n => "data:image/svg+xml;utf8," + encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' fill='#0b0e12'/><text x='150' y='155' fill='#3b4550' font-family='sans-serif' font-size='16' text-anchor='middle'>${n}</text></svg>`);
+
+$("grid").innerHTML = PRODUCTS.map(p => `
+  <div class="card">
+    <img src="${p.img}" alt="${p.name}">
+    <div class="body">
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <div class="price"><b>${p.price} USDT</b><s>${p.compare}</s></div>
+      <button class="primary" data-add="${p.id}">Add to cart</button>
+    </div>
+  </div>`).join("");
+document.querySelectorAll(".card img").forEach(img => {
+  const fallback = () => { img.onerror = null; img.src = placeholder("photo"); };
+  img.onerror = fallback;
+  if (img.complete && !img.naturalWidth) fallback();
+});
+
+function total(){ return PRODUCTS.reduce((s,p)=>s+(cart[p.id]||0)*p.price,0); }
+function render(){
+  const items = PRODUCTS.filter(p=>cart[p.id]);
+  $("cartCount").textContent = items.reduce((s,p)=>s+cart[p.id],0);
+  $("lines").innerHTML = items.length ? items.map(p=>`
+    <div class="line"><span>${p.name}</span>
+      <span class="qty"><button data-dec="${p.id}">−</button> ${cart[p.id]} <button data-add="${p.id}">+</button></span>
+    </div>`).join("") : `<p style="color:var(--muted)">Your cart is empty.</p>`;
+  $("total").textContent = $("total2").textContent = total().toFixed(2);
+  $("checkout").style.display = items.length ? "block" : "none";
+}
+function orderText(){
+  const items = PRODUCTS.filter(p=>cart[p.id]).map(p=>`- ${cart[p.id]} x ${p.name} (${p.price} USDT)`).join("\n");
+  return `NEW ORDER\n\n${items}\nTotal: ${total().toFixed(2)} USDT (TRC-20)\n\nName: ${$("fName").value}\nEmail: ${$("fEmail").value}\nAddress: ${$("fAddr").value}\nTxID: ${$("fTx").value}`;
+}
+function valid(){
+  if(!$("fName").value || !$("fEmail").value || !$("fAddr").value || !$("fTx").value){
+    $("msg").textContent = "Please fill in all fields, including the transaction ID."; return false;
+  } return true;
+}
+
+document.addEventListener("click", e => {
+  const a = e.target.dataset.add, d = e.target.dataset.dec;
+  if(a){ cart[a]=(cart[a]||0)+1; render(); }
+  if(d){ cart[d]--; if(cart[d]<=0) delete cart[d]; render(); }
+});
+$("cartBtn").onclick = () => $("overlay").classList.add("open");
+$("closeCart").onclick = () => $("overlay").classList.remove("open");
+$("overlay").onclick = e => { if(e.target.id==="overlay") $("overlay").classList.remove("open"); };
+$("copyAddr").onclick = () => navigator.clipboard.writeText(CONFIG.wallet).then(()=>$("msg").textContent="Address copied.");
+$("copyOrder").onclick = () => { if(valid()) navigator.clipboard.writeText(orderText()).then(()=>$("msg").textContent=`Order copied — email it to ${CONFIG.email}.`); };
+$("sendOrder").onclick = () => {
+  if(!valid()) return;
+  location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent("Order - "+$("fName").value)}&body=${encodeURIComponent(orderText())}`;
+  $("msg").textContent = "Your email app should open with the order. If not, use “Copy order text”.";
+};
+$("wallet").textContent = CONFIG.wallet;
+$("contactLink").textContent = CONFIG.email; $("contactLink").href = "mailto:"+CONFIG.email;
+$("year").textContent = new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
