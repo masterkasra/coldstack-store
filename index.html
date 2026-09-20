@@ -7,38 +7,77 @@
 <meta name="description" content="Desk and security gear for crypto traders. Pay with USDT.">
 <style>
   :root{
-    --bg:#0e1116; --panel:#161b22; --line:#262d36; --text:#e6edf3; --muted:#8b949e;
-    --accent:#26a17b; --accent-ink:#04110c; --warn:#d29922;
+    --bg:#0b0e13; --panel:#12171f; --panel-2:#161c26; --line:#232b36; --text:#e8eef6; --muted:#93a1b1;
+    --accent:#26a17b; --accent-soft:#3ecf9a; --accent-ink:#04110c; --warn:#e3b341;
+    --radius:14px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-  a{color:var(--accent)}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
-  header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
-  header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .logo{font-weight:700;letter-spacing:.3px}
-  .logo span{color:var(--accent)}
-  button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 14px}
-  button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-  .hero{padding:56px 0 32px}
-  .hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
-  .hero p{color:var(--muted);max-width:620px;margin:0}
-  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-  .badge{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;color:var(--muted)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:16px 0 48px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
-  .card img{width:100%;aspect-ratio:1;object-fit:cover;background:#0b0e12;display:block}
-  .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
-  .card h3{margin:0;font-size:17px}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  /* ambient grid + glow, drawn behind everything */
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(60% 45% at 50% -5%, rgba(38,161,123,.18), transparent 70%),
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px) 0 0/56px 56px,
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px) 0 0/56px 56px;
+    mask-image:linear-gradient(#000 0, #000 620px, transparent 900px)}
+  a{color:var(--accent-soft)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
+    background:rgba(11,14,19,.72);backdrop-filter:blur(12px)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:700;letter-spacing:-.2px;font-size:18px}
+  .logo span{color:var(--accent-soft)}
+  button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);
+    padding:9px 15px;transition:background .15s,border-color .15s,transform .15s}
+  button:hover{background:#1b222d;border-color:#313d4c}
+  button:active{transform:translateY(1px)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:650}
+  button.primary:hover{background:var(--accent-soft);border-color:var(--accent-soft)}
+  .hero{padding:80px 0 40px;max-width:760px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);
+    border-radius:999px;padding:6px 14px;font-size:13px;color:var(--muted);margin-bottom:22px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-soft);box-shadow:0 0 10px var(--accent-soft)}
+  .hero h1{font-size:clamp(32px,5.4vw,54px);line-height:1.08;letter-spacing:-1.4px;margin:0 0 16px;font-weight:700}
+  .hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent-soft),#8ee9c6);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);font-size:18px;margin:0}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);
+    border-radius:999px;padding:7px 14px;font-size:14px;color:var(--muted)}
+  .badge svg{width:15px;height:15px;stroke:var(--accent-soft);fill:none;stroke-width:2}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;padding:20px 0 56px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s}
+  .card:hover{transform:translateY(-3px);border-color:#31414f;box-shadow:0 14px 32px -18px rgba(0,0,0,.9)}
+  .card .shot{position:relative;overflow:hidden;background:#0a0d12}
+  .card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;transition:transform .35s ease}
+  .card:hover img{transform:scale(1.04)}
+  .tag{position:absolute;top:10px;left:10px;background:rgba(11,14,19,.82);border:1px solid var(--line);
+    border-radius:999px;padding:4px 10px;font-size:12px;color:var(--accent-soft);backdrop-filter:blur(6px)}
+  .card .body{padding:16px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .card h3{margin:0;font-size:17px;letter-spacing:-.2px}
   .card p{margin:0;color:var(--muted);font-size:14px;flex:1}
-  .price{display:flex;align-items:baseline;gap:8px}
-  .price b{font-size:20px}
+  .price{display:flex;align-items:baseline;gap:9px}
+  .price b{font-size:21px;letter-spacing:-.4px}
   .price s{color:var(--muted);font-size:14px}
-  section h2{font-size:24px;margin:0 0 12px}
-  .faq details{border-bottom:1px solid var(--line);padding:12px 0}
-  .faq summary{cursor:pointer;font-weight:600}
-  .faq p{color:var(--muted);margin:8px 0 0}
-  footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px;padding:24px 0;margin-top:48px}
+  .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;margin-bottom:56px}
+  .trust div{display:flex;gap:12px;align-items:flex-start}
+  .trust svg{width:20px;height:20px;stroke:var(--accent-soft);fill:none;stroke-width:1.8;flex:none;margin-top:3px}
+  .trust b{display:block;font-size:15px}
+  .trust span{color:var(--muted);font-size:14px}
+  section h2{font-size:26px;letter-spacing:-.6px;margin:0 0 16px}
+  .faq{max-width:760px}
+  .faq details{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .faq details[open]{border-color:#31414f}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--muted);font-weight:400}
+  .faq details[open] summary::after{content:"−"}
+  .faq p{color:var(--muted);margin:10px 0 0}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px;padding:28px 0;margin-top:64px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
   /* cart drawer */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:10}
   .overlay.open{display:block}
@@ -63,16 +102,26 @@
 
 <main class="wrap">
   <div class="hero">
-    <h1>Gear for people who hold their own keys.</h1>
-    <p>Steel seed backups, RFID-safe wallets and clean desk setups for traders. Pay with USDT, ship worldwide.</p>
+    <span class="eyebrow"><i class="dot"></i> Ships worldwide · Paid in stablecoins</span>
+    <h1>Gear for people who <em>hold their own keys</em>.</h1>
+    <p>Steel seed backups, RFID-safe wallets and clean desk setups for traders. Pay with USDT on TRON, BNB Chain or TON.</p>
     <div class="badges">
-      <span class="badge">Pay in USDT (TRC-20 · BEP-20 · TON)</span>
-      <span class="badge">Free worldwide shipping</span>
-      <span class="badge">30-day money-back</span>
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg>USDT · TRC-20 · BEP-20 · TON</span>
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Free worldwide shipping</span>
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>30-day money-back</span>
     </div>
   </div>
 
   <div class="grid" id="grid"></div>
+
+  <section class="trust">
+    <div><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <div><b>We never ask for your seed</b><span>The steel plate is passive metal. You stamp your own words.</span></div></div>
+    <div><svg viewBox="0 0 24 24"><path d="M12 3v18M7 8h7a3 3 0 0 1 0 6H7"/></svg>
+      <div><b>Stablecoin checkout</b><span>Pay in USDT. No card details, no account to create.</span></div></div>
+    <div><svg viewBox="0 0 24 24"><path d="m4 13 5 5L20 7"/></svg>
+      <div><b>Tracked delivery</b><span>Tracking number by email, 7–15 business days.</span></div></div>
+  </section>
 
   <section class="faq" id="faq">
     <h2>FAQ</h2>
@@ -138,7 +187,7 @@ const CONFIG = {
 };
 /* price = what the customer pays (USDT). cost = your estimated supplier cost incl. shipping — not shown on the site. */
 const PRODUCTS = [
-  { id:"seed",  name:"Steel Seed Phrase Backup Plate", price:39, compare:59, cost:9,
+  { id:"seed",  name:"Steel Seed Phrase Backup Plate", price:39, compare:59, cost:9, tag:"Best seller",
     desc:"Stainless-steel plate for 24 words. Fire- and water-resistant. Includes punch set.", img:"img/seed.jpg" },
   { id:"light", name:"Monitor Light Bar", price:34, compare:49, cost:12,
     desc:"Clip-on LED bar, no screen glare, adjustable warmth. USB powered.", img:"img/light.jpg" },
@@ -160,7 +209,7 @@ const placeholder = n => "data:image/svg+xml;utf8," + encodeURIComponent(
 
 $("grid").innerHTML = PRODUCTS.map(p => `
   <div class="card">
-    <img src="${p.img}" alt="${p.name}">
+    <div class="shot"><img src="${p.img}" alt="${p.name}">${p.tag ? `<span class="tag">${p.tag}</span>` : ""}</div>
     <div class="body">
       <h3>${p.name}</h3>
       <p>${p.desc}</p>
