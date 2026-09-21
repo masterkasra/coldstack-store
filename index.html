@@ -104,9 +104,9 @@
   <div class="hero">
     <span class="eyebrow"><i class="dot"></i> Ships worldwide · Paid in stablecoins</span>
     <h1>Gear for people who <em>hold their own keys</em>.</h1>
-    <p>Steel seed backups, RFID-safe wallets and clean desk setups for traders. Pay with USDT on TRON, BNB Chain or TON.</p>
+    <p>Steel seed backups, RFID-safe wallets and clean desk setups for traders. Pay with USDT, ship worldwide.</p>
     <div class="badges">
-      <span class="badge"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg>USDT · TRC-20 · BEP-20 · TON</span>
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-4Z"/></svg><span id="netBadge">USDT</span></span>
       <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Free worldwide shipping</span>
       <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>30-day money-back</span>
     </div>
@@ -128,7 +128,7 @@
     <details><summary>How long does shipping take?</summary>
       <p>Orders ship from our partner warehouse within 1–3 business days. Delivery usually takes 7–15 business days to the US, UK, EU and UAE. You get a tracking number by email.</p></details>
     <details><summary>How do I pay?</summary>
-      <p>Add items to your cart, pick a network (TRC-20, BEP-20 or TON), send the exact USDT amount to the address shown at checkout, then paste your transaction ID in the order form. We confirm your order by email within 24 hours.</p></details>
+      <p>Add items to your cart, pick a network, send the exact USDT amount to the address shown at checkout, then paste your transaction ID in the order form. We confirm your order by email within 24 hours.</p></details>
     <details><summary>What if something arrives damaged or I'm not happy?</summary>
       <p>Email us within 30 days of delivery with a photo and we'll send a replacement or refund your USDT to the wallet you paid from.</p></details>
     <details><summary>Is the steel seed plate safe?</summary>
@@ -180,24 +180,24 @@ const CONFIG = {
   /* Paste each USDT address between the quotes. Leave "" to hide that network. */
   wallets: {
     "TRC-20 (Tron)":      "",
-    "BEP-20 (BNB Chain)": "",
-    "TON":                ""
+    "BEP-20 (BNB Chain)": "0x56D986CF7Db37F1D20A8C18601C65D868fb673fd",
+    "TON":                "UQBIno7uj98lmDq-6VRv65i_Q7DwX-MCHkdjuoRPMbV7lcuY"
   },
   email:  "Kasra.dadfar@gmail.com"
 };
-/* price = what the customer pays (USDT). cost = your estimated supplier cost incl. shipping — not shown on the site. */
+/* soon:true = no confirmed supplier yet, cannot be ordered. price = what the customer pays (USDT). cost = your estimated supplier cost incl. shipping — not shown on the site. */
 const PRODUCTS = [
-  { id:"seed",  name:"Steel Seed Phrase Backup Plate", price:39, compare:59, cost:9, tag:"Best seller",
+  { id:"seed",  name:"Steel Seed Phrase Backup Plate", price:39, cost:9, tag:"Coming soon", soon:true,
     desc:"Stainless-steel plate for 24 words. Fire- and water-resistant. Includes punch set.", img:"img/seed.jpg" },
-  { id:"light", name:"Monitor Light Bar", price:34, compare:49, cost:12,
+  { id:"light", name:"Monitor Light Bar", price:34, cost:12, tag:"Coming soon", soon:true,
     desc:"Clip-on LED bar, no screen glare, adjustable warmth. USB powered.", img:"img/light.jpg" },
-  { id:"wallet",name:"MagSafe Card Wallet (RFID-blocking)", price:24, compare:35, cost:5,
+  { id:"wallet",name:"MagSafe Card Wallet (RFID-blocking)", price:24, cost:5, tag:"Coming soon", soon:true,
     desc:"Snaps onto iPhone 12+, holds 3 cards, blocks contactless skimming.", img:"img/wallet.jpg" },
-  { id:"power", name:"Card-Size Power Bank 5000mAh", price:32, compare:45, cost:10,
+  { id:"power", name:"Card-Size Power Bank 5000mAh", price:32, cost:10, tag:"Coming soon", soon:true,
     desc:"Slim as 3 credit cards, built-in USB-C cable.", img:"img/power.jpg" },
-  { id:"rfid",  name:"Aluminium RFID Card Holder", price:22, compare:32, cost:5,
+  { id:"rfid",  name:"Aluminium RFID Card Holder", price:22, cost:5,
     desc:"Pop-up card holder, fits 6 cards, metal shell blocks RFID.", img:"img/rfid.jpg" },
-  { id:"stand", name:"Foldable Aluminium Laptop Stand", price:36, compare:52, cost:11,
+  { id:"stand", name:"Foldable Aluminium Laptop Stand", price:36, cost:11,
     desc:"6 height levels, folds flat, supports up to 17-inch laptops.", img:"img/stand.jpg" }
 ];
 /* ======================== */
@@ -207,14 +207,14 @@ const cart = {};
 const placeholder = n => "data:image/svg+xml;utf8," + encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' fill='#0b0e12'/><text x='150' y='155' fill='#3b4550' font-family='sans-serif' font-size='16' text-anchor='middle'>${n}</text></svg>`);
 
-$("grid").innerHTML = PRODUCTS.map(p => `
+$("grid").innerHTML = [...PRODUCTS].sort((a, b) => !!a.soon - !!b.soon).map(p => `
   <div class="card">
     <div class="shot"><img src="${p.img}" alt="${p.name}">${p.tag ? `<span class="tag">${p.tag}</span>` : ""}</div>
     <div class="body">
       <h3>${p.name}</h3>
       <p>${p.desc}</p>
-      <div class="price"><b>${p.price} USDT</b><s>${p.compare}</s></div>
-      <button class="primary" data-add="${p.id}">Add to cart</button>
+      <div class="price"><b>${p.price} USDT</b></div>
+      ${p.soon ? `<button disabled style="opacity:.55;cursor:not-allowed">Coming soon</button>` : `<button class="primary" data-add="${p.id}">Add to cart</button>`}
     </div>
   </div>`).join("");
 document.querySelectorAll(".card img").forEach(img => {
@@ -270,6 +270,7 @@ function pickNet(n){
 $("nets").innerHTML = nets.map(n => `<button data-net="${n}">${n}</button>`).join("");
 $("nets").onclick = e => { if (e.target.dataset.net) pickNet(e.target.dataset.net); };
 pickNet(net);
+$("netBadge").textContent = "USDT · " + nets.map(n => n.split(" ")[0]).join(" · ");
 $("contactLink").textContent = CONFIG.email; $("contactLink").href = "mailto:"+CONFIG.email;
 $("year").textContent = new Date().getFullYear();
 render();
